@@ -28,7 +28,8 @@ public class MatchTheObject : MonoBehaviour
     public Slider xSlider;
     public Slider ySlider;
     public Slider zSlider;
-
+    public Button buttonNext;
+    
     private Shape shape;
     private ObjectColor objectColor;
     private float size = 0.26f;
@@ -116,8 +117,20 @@ public class MatchTheObject : MonoBehaviour
         bool correct = shape == targetShape && objectColor == targetColor
             && Mathf.Abs(size - targetObject.localScale.x) <= targetObject.localScale.x * sizeTolerance
             && RotationMatches(shape, playerObject.rotation, targetObject.rotation, rotationTolerance);
-        feedbackText.color = correct ? new Color(0.45f, 1, 0.6f) : new Color(1, 0.8f, 0.4f);
-        feedbackText.text = correct ? "Correct! Your object matches the target." : "Not quite a match yet. Look again and try another change.";
+        
+        
+        if (correct)
+        {
+            feedbackText.color = new Color(0.45f, 1, 0.6f);
+            feedbackText.text = "Correct! Your object matches the target.";
+            buttonNext.gameObject.SetActive(true);
+        }
+        else
+        {
+            feedbackText.color = new Color(1, 0.8f, 0.4f);
+            feedbackText.text = "Not quite a match yet. Look again and try another change.";
+            buttonNext.gameObject.SetActive(false);
+        }
     }
 
     public static bool RotationMatches(Shape shape, Quaternion player, Quaternion target, float tolerance)
